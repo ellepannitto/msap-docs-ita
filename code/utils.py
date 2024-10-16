@@ -1,5 +1,7 @@
+import random
 from typing import List, Union
 from copy import deepcopy
+import conllu
 
 
 def span(parse_tree):
@@ -65,3 +67,44 @@ def get_response(possible_responses, prompt):
         print('##### USER INPUT NEEDED #####')
         response = input(prompt)
     return response
+
+def reservoir(iterator, K):
+
+    result = []
+    N = 0
+
+    for item in iterator:
+        N += 1
+        if len(result) < K:
+            result.append(item)
+        else:
+            s = int(random.random() * N)
+            if s < K:
+                result[s] = item
+
+    return result
+
+
+def sample(input_file, n, output_file, seed):
+    random.seed(seed)
+
+    ret = []
+    N = 0
+
+    with open(input_file, encoding='utf8') as fin:
+        parse_trees = list(conllu.parse_incr(fin))
+        for sent in parse_trees:
+            # print(sent)
+            n_orphans = len(sent.filter(deprel="orphan"))
+            if n_orphans == 0:
+                N += 1
+                if len(ret) < n:
+                    ret.append(sent)
+                else:
+                    i = int(random.random() * N)
+                    if i < n:
+                        ret[i] = sent
+
+    with open(output_file, "w", encoding="utf-8") as fout:
+        for sent in ret:
+            print(sent.serialize(), file=fout)
