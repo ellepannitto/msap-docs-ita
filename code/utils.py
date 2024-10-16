@@ -68,23 +68,6 @@ def get_response(possible_responses, prompt):
         response = input(prompt)
     return response
 
-def reservoir(iterator, K):
-
-    result = []
-    N = 0
-
-    for item in iterator:
-        N += 1
-        if len(result) < K:
-            result.append(item)
-        else:
-            s = int(random.random() * N)
-            if s < K:
-                result[s] = item
-
-    return result
-
-
 def sample(input_file, n, output_file, seed):
     random.seed(seed)
 
@@ -96,7 +79,7 @@ def sample(input_file, n, output_file, seed):
         for sent in parse_trees:
             # print(sent)
             n_orphans = len(sent.filter(deprel="orphan"))
-            if n_orphans == 0:
+            if n_orphans == 0: #TODO change with extended list of conditions
                 N += 1
                 if len(ret) < n:
                     ret.append(sent)
