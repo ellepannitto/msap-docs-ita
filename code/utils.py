@@ -78,7 +78,7 @@ def sample(input_file, n, output_file, seed):
         parse_trees = list(conllu.parse_incr(fin))
         for sent in parse_trees:
             # print(sent)
-            n_orphans = len(sent.filter(deprel="orphan"))
+            n_orphans = len(sent.filter(deprel="orphan").filter(deprel="parataxis"))
             if n_orphans == 0: #TODO change with extended list of conditions
                 N += 1
                 if len(ret) < n:

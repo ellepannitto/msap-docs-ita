@@ -27,7 +27,7 @@ if __name__ == "__main__":
 	root_parser = argparse.ArgumentParser(prog='ud+', add_help=True)
 	subparsers = root_parser.add_subparsers(title="actions", dest="actions")
 
-	parser_selectsentences = subparsers.add_parser('select-sentences', parents=[parent_parser],
+	parser_selectsentences = subparsers.add_parser('select', parents=[parent_parser],
 												description='select suitable sentences from ud treebanks',
 												help='select suitable sentences from ud treebanks')
 	parser_selectsentences.add_argument("-i", "--input-dir", required=True,
